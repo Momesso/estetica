@@ -1,5 +1,6 @@
 <?php
-
+$fotos = $result->result;
+dd($fotos[0]->content[0]);
 ?>
 <!DOCTYPE HTML>
 <!--

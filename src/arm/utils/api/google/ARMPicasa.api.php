@@ -8,13 +8,92 @@ class ARMPicasaAPI {
 	public static function init(){
 		//
 	}
-	public static function getPublicAlbumMedia( $publicAlbumURL , $image_size = 1024 ){
+
+	/**
+	 * se souber o user id e o album envie
+	 * @param $user_id
+	 * @param $album_id
+	 * @param int $image_size
+	 * @return array
+	 */
+	public static function getPublicAlbumByUserAlbum($user_id, $album_id, $image_size = 1024){
+		$url = "https://picasaweb.google.com/data/feed/api/user/{$user_id}/albumid/{$album_id}/?imgmax={$image_size}";
+
+		//TODO: Refazer a API
+
+// 		ARMDebug::li($url);
+
+		$xml = new XMLReader();
+// 		$xml->setSchema("http://schemas.google.com/photos/exif/2007") ;
+		$xml->open( $url );
 		
+
+
+
+		$pictures = array();
+
+		while( $xml->read() &&   $xml->name  !== 'entry' );
+
+		// now that we're at the right depth, hop to the next <product/> until the end of the tree
+		while ($xml->name === 'entry')
+		{
+			// either one should work
+// 			$entry = new XMLReader();
+			//$entry->readOuterXml(  );
+
+			$entry = $xml->expand();
+
+			$picture = array();
+
+
+
+
+			$items = $entry->getElementsByTagName( "group" ) ;// DOMNodeList
+// 			$pictures[] = ARMDataHandler::DOMNodeListToArray( $items ) ;
+// 			$xml->next('entry');
+// 			continue;
+// 			die;
+// 			if( FALSE ) $items = new DOMNodeList();
+
+// 			var_dump( $items, $items->length );
+			for ($i = 0; $i < $items->length; $i++) {
+				$contentDOMNodeList = $items->item( $i )->getElementsByTagName("content")  ;
+
+				$content = array();
+				for( $ii = 0 ; $ii < $contentDOMNodeList->length ; $ii++ ){
+					$DOMElement = $contentDOMNodeList->item( $ii ) ;
+					$content[]  = ARMDataHandler::DOMElementToObject( $DOMElement );;
+				}
+
+				$thumbnailDOMNodeList = $items->item( $i )->getElementsByTagName("thumbnail")  ;
+				$thumbnail = array();
+				for( $ii = 0 ; $ii < $thumbnailDOMNodeList->length ; $ii++ ){
+					$DOMElement = $thumbnailDOMNodeList->item( $ii ) ;
+
+					$thumbnail[]  = ARMDataHandler::DOMElementToObject( $DOMElement );
+				}
+
+				$picture = (object) array( "content"=> $content, "thumbnail"=> $thumbnail );
+
+			}
+
+			$pictures[] = $picture;
+
+			$xml->next('entry');
+		}
+// 		var_dump( $pictures);
+
+		return $pictures;
+	}
+	public static function getPublicAlbumMedia( $publicAlbumURL , $image_size = 1024 ){
+
+		//TODO: upgrade no picasa web api
+		return NULL ;
 		
 // 		ARMDebug::print_r($publicAlbumURL);
 		
 		//https://plus.google.com/photos/103651147482744881666/albums/5858627894347575585?banner=pwa
-		
+		//https://picasaweb.google.com/103651147482744881666/CasamentoCintiaEVictor
 		preg_match_all( "/photos\/([0-9]+)\/albums\/([0-9]+)/" , $publicAlbumURL, $out);
 		
 // 		ARMDebug::print_r( $out );	
@@ -26,71 +105,7 @@ class ARMPicasaAPI {
 		
 		$album_id = $out[2][0];
 		
-		$url = "https://picasaweb.google.com/data/feed/api/user/{$user_id}/albumid/{$album_id}/?imgmax={$image_size}";
-		
-// 		ARMDebug::li($url);
-		
-		$xml = new XMLReader();
-// 		$xml->setSchema("http://schemas.google.com/photos/exif/2007") ;
-		$xml->open( $url );
-		var_dump( $xml);
- 		var_dump( $xml->expand());
-		
-		
-		$pictures = array();
-		
-		while( $xml->read() &&   $xml->name  !== 'entry' );
-
-		// now that we're at the right depth, hop to the next <product/> until the end of the tree
-		while ($xml->name === 'entry')
-		{
-			// either one should work
-// 			$entry = new XMLReader();
-			//$entry->readOuterXml(  );
-			
-			$entry = $xml->expand();
-			 
-			$picture = array();
-			
-			
-			
-			
-			$items = $entry->getElementsByTagName( "group" ) ;// DOMNodeList
-// 			$pictures[] = ARMDataHandler::DOMNodeListToArray( $items ) ;
-// 			$xml->next('entry');
-// 			continue;
-// 			die;
-// 			if( FALSE ) $items = new DOMNodeList();
-
-// 			var_dump( $items, $items->length );
-			for ($i = 0; $i < $items->length; $i++) {
-				$contentDOMNodeList = $items->item( $i )->getElementsByTagName("content")  ;
-				
-				$content = array();
-				for( $ii = 0 ; $ii < $contentDOMNodeList->length ; $ii++ ){
-					$DOMElement = $contentDOMNodeList->item( $ii ) ;
-					$content[]  = ARMDataHandler::DOMElementToObject( $DOMElement );;
-				}
-				
-				$thumbnailDOMNodeList = $items->item( $i )->getElementsByTagName("thumbnail")  ;
-				$thumbnail = array();
-				for( $ii = 0 ; $ii < $thumbnailDOMNodeList->length ; $ii++ ){
-					$DOMElement = $thumbnailDOMNodeList->item( $ii ) ;
-					
-					$thumbnail[]  = ARMDataHandler::DOMElementToObject( $DOMElement );
-				}
-				
-				$picture = (object) array( "content"=> $content, "thumbnail"=> $thumbnail );
-				
-			}
-			
-			$pictures[] = $picture;
-			
-			$xml->next('entry');
-		}
-// 		var_dump( $pictures);
-
-		return $pictures;
+		return self::getPublicAlbumByUserAlbum($user_id, $album_id, $image_size) ;
 	}
 
 	
