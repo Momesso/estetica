@@ -1,0 +1,10 @@
+{
+  "dev":1,
+  "folder_request_controler":"estetica/private/controller/",
+  "app_url":"localhost/estetica/",
+  "root_app":"localhost/estetica/",
+  "class_path_list":[
+    "arm", "estetica/private/"
+  ],
+  "folder_modules_config":"estetica/private/configs/"
+}
