@@ -10,8 +10,20 @@ class ARMPicasaAPI {
 		//
 	}
 	
-	public static function getImageByResult(){
-		
+	public static function getImageByResult($foto){
+		return $foto->content[0]->attributes->url;
+	}
+	
+	public static function getImageThumbSmall($foto){
+		return $foto->thumbnail[0]->attributes->url;
+	}
+
+	public static function getImageThumbMedium($foto){
+		return $foto->thumbnail[1]->attributes->url;
+	}
+
+	public static function getImageThumbBig($foto){
+		return $foto->thumbnail[2]->attributes->url;
 	}
 
 	/**
