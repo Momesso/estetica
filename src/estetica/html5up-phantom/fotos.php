@@ -5,13 +5,13 @@ $fotos = $result->result;
 //dd($teste);
 
 foreach ($fotos as $foto){
-?>
+//dd($foto->content[0]->attributes->url);
+	?>
+    <img src="<?php echo $foto->content[0]->attributes->url; ?>" alt="" />
 
-    <img src="<?php echo $foto->content->url; ?>" alt="" />
-    
 <?php
 }
-
+die;
 ?>
 <!DOCTYPE HTML>
 <!--

@@ -5,8 +5,13 @@
  *
  */
 class ARMPicasaAPI {
+	
 	public static function init(){
 		//
+	}
+	
+	public static function getImageByResult(){
+		
 	}
 
 	/**
