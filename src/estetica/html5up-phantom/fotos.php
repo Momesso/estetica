@@ -1,7 +1,17 @@
 <?php
 $fotos = $result->result;
-dd($fotos[0]->content[0]);
-$teste = 
+//dd($fotos[0]->content[0]);
+//$teste = $fotos->content->value;
+//dd($teste);
+
+foreach ($fotos as $foto){
+?>
+
+    <img src="<?php echo $foto->content->url; ?>" alt="" />
+    
+<?php
+}
+
 ?>
 <!DOCTYPE HTML>
 <!--
