@@ -1,6 +1,7 @@
 <?php
 $fotos = $result->result;
 dd($fotos[0]->content[0]);
+$teste = 
 ?>
 <!DOCTYPE HTML>
 <!--
@@ -54,7 +55,7 @@ dd($fotos[0]->content[0]);
 								<h1>Criando site Estetica.</h1>
 								<p>Descrição do site... mimimi mimimi ... </p>
 							</header>
-							
+
 						</div>
 					</div>
 
