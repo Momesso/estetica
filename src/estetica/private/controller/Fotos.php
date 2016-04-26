@@ -11,6 +11,7 @@ class Fotos{
 //        dd("Estou no fotos");
         $picasa = ARMPicasaAPI::getPublicAlbumByUserAlbum('117746404603506105155','5856341556755941377');
 //        dd($picasa);
+
         return $picasa;
     }
 }
