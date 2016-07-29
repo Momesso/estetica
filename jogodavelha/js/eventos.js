@@ -29,7 +29,6 @@
 			jogadorAtual = jogador1;
 			setLabelJogadorAtual();
 
-			//APOS DEFINIÇÃO DE JOGADORES, EXIBE A DIV E INICIA JOGO
 			document.getElementById('game').style.visibility = 'visible';
 			
 		}
